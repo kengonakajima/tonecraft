@@ -7,6 +7,7 @@
       .basetype { width:100px; }
     </style>
     <script src="../Tone.min.js"></script>
+    <script src="./wfxr.js"></script>    
   </head>
   <body>
 
@@ -82,9 +83,10 @@
       <button class="basetype">Random</button>      <BR>
       <BR><BR>
         
-        <tr><td><button class="basetype">Play</button></td> </tr>
-        <tr><td><button class="basetype">Play looping</button></td> </tr>
-        <tr><td>playback volume<BR><input id="r1" type="range" min=0 max=10000> </td> </tr>
+      <tr><td><button class="basetype" onclick="onPlayButton()">Play</button></td> </tr>
+      <tr><td><button class="basetype" onclick="onStopButton()">Stop</button></td> </tr>      
+      <tr><td><button class="basetype">Play looping</button></td> </tr>
+      <tr><td>playback volume<BR><input id="r1" type="range" min=0 max=10000> </td> </tr>
       </table>
     </td>
 </table>    
