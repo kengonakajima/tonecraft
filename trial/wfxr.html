@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <style type="text/css">
+
+th.example1 { width: 100px; }
+th.example2 { width: 200px; }
+
+td { height: 0px; font-size:8px; }
+
+.basetype { width:100px; }
+</style>
+  </head>
+  <body>
+
+<button>Square</button> <button>Sawtooth</button> <button>Sine</button> <button>Noise</button>
+  
+<hr>
+
+<table>
+  <tr>
+      
+
+  <td>
+<table id="sliders">
+  <tr> <td>Attack time</td> <td><input id="r1" type="range" min=0 max=10> </td> </tr>
+  <tr> <td>Sustain time</td> <td><input id="r1" type="range" min=0 max=10> </td> </tr>
+  <tr> <td>Sustain punch</td> <td><input id="r1" type="range" min=0 max=10> </td> </tr>
+  <tr> <td>Decay time</td> <td><input id="r1" type="range" min=0 max=10> </td> </tr>      
+
+  <tr> <td>&nbsp;</td></tr>
+
+
+  <tr> <td>Start frequency</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+  <tr> <td>Min frequency cutoff</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+  <tr> <td>Slide</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+  <tr> <td>Delta slide</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+  <tr> <td>Vibrato pitch</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+  <tr> <td>Vibrato speed</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+
+  <tr> <td>&nbsp;</td></tr>
+
+  <tr> <td>Change amount</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+  <tr> <td>Change speed</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+
+  <tr> <td>&nbsp;</td></tr>
+  
+  <tr> <td>Square duty</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+  <tr> <td>Duty sweep</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+
+  <tr> <td>&nbsp;</td></tr>
+  
+  <tr> <td>Repeat speed</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+
+  <tr> <td>&nbsp;</td></tr>
+
+  <tr> <td>Phaser offset</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+  <tr> <td>Phaser sweep</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+
+  <tr> <td>&nbsp;</td></tr>
+
+  <tr> <td>Low-pass filter cutoff</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+  <tr> <td>Low-pass filter cutoff sweep</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+  <tr> <td>Low-pass filter resonance</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+
+  <tr> <td>High-pass filter cutoff</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+  <tr> <td>High-pass filter cutoff sweep</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+  <tr> <td>High-pass filter resonance</td> <td><input id="r1" type="range" min=0 max=10000> </td> </tr>
+
+  
+</table> 
+  
+    </td>
+    
+    <td>
+      <table name="controls">
+
+      <button class="basetype">Pickup/coin</button><BR>
+      <button class="basetype">Laser/shoot</button><BR>
+      <button class="basetype">Explosion</button><BR>
+      <button class="basetype">Powerup</button><BR>
+      <button class="basetype">Hit/hurt</button><BR>
+      <button class="basetype">Jump</button><BR>
+      <button class="basetype">Blip/select</button><BR>
+      <button class="basetype">Random</button>      <BR>
+      <BR><BR>
+        
+        <tr><td><button class="basetype">Play</button></td> </tr>
+        <tr><td><button class="basetype">Play looping</button></td> </tr>
+        <tr><td>playback volume<BR><input id="r1" type="range" min=0 max=10000> </td> </tr>
+      </table>
+    </td>
+</table>    
