@@ -1,15 +1,67 @@
-//make the noise and connect it to the output                                                           
 
-var noiseSynth = new Tone.NoiseSynth().toMaster();
+var current_conf={
+    osc_type:"sine",
+    start_freq:440,
+    attack_time:0.4,
+    sustain_time:0.5,
+    sustain_punch:1,
+    decay_time:2
+};
+
+
+
+class WFXRSynth {
+    constructor(opts) {
+        this.conf={};
+        // default values
+        this.conf.osc_type="sine";
+        this.conf.start_freq = 440;
+        this.conf.attack_time=0;
+        this.conf.sustain_time=0.5;
+        this.conf.sustain_punch=1;
+        this.conf.decay_time=1;
+        this.conf.volume=1;
+        
+        // options
+        for(var i in opts) {
+            this.conf[i]=opts[i];
+        }
+
+        // TODO: validation
+        
+        //var noiseSynth = new Tone.NoiseSynth().toMaster();
+
+        switch(this.conf.osc_type) {
+        case "sine":
+        case "sawtooth":
+        case "square":
+            this.osc= new Tone.Oscillator({
+                volume: this.conf.volume,
+                type: this.conf.osc_type,
+                frequency: this.conf.start_freq
+            });
+        }
+        this.osc.toMaster();
+    }
+    play() {
+        this.osc.start();
+    }
+};
 
 
 function onPlayButton() {
-    noiseSynth.triggerAttackRelease("8n");
+    console.log("Play");
+    
+    var synth = new WFXRSynth(current_conf);
+
+    synth.play();
+    
+//    noiseSynth.triggerAttackRelease("8n");
 //                param : "type",                                                                                 
     //                options : ["white", "brown", "pink"]
 
     
-    console.log("Play");
+
 //    noise.start(0);
 
 }
