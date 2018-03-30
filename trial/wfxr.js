@@ -14,11 +14,11 @@ class WFXRSynth {
     constructor(opts) {
         this.conf={};
         // default values
-        this.conf.osc_type="sine";
+        this.conf.osc_type="sawtooth";
         this.conf.start_freq = 440;
         this.conf.attack_time=0;
         this.conf.sustain_time=0.5;
-        this.conf.sustain_punch=1;
+        this.conf.sustain_punch=0.5;
         this.conf.decay_time=1;
         this.conf.volume=1;
         
@@ -35,14 +35,31 @@ class WFXRSynth {
         case "sine":
         case "sawtooth":
         case "square":
+/*            
             this.osc= new Tone.Oscillator({
                 volume: this.conf.volume,
                 type: this.conf.osc_type,
                 frequency: this.conf.start_freq
             });
+*/
+            this.synth = new Tone.Synth({
+                oscillator: {
+                    detune:0,
+                    type: this.conf.osc_type,
+                    phase:0,
+                    volume:1
+                },
+                envelope: {
+                    attack: 0.1,
+                    decay:0.3,
+                    sustain:0.2,
+                    release:1
+                }
+            });
+            this.synth.toMaster();
         }
-        this.osc.toMaster();
-
+        //        this.osc.toMaster();
+/*        
         this.env = new Tone.AmplitudeEnvelope({
             attack: this.conf.attack_time,
             decay: this.conf.decay_time,
@@ -51,9 +68,12 @@ class WFXRSynth {
         });
         this.osc.connect(this.env);
         this.env.toMaster();
+        */
+
     }
     play() {
-        this.osc.start();
+//        this.osc.start();        
+        this.synth.triggerAttackRelease("440","4"); // "C4", "8n" とかでもok
     }
     stop() {
         this.osc.stop();
@@ -76,6 +96,7 @@ function onPlayButton() {
     
 
 //    noise.start(0);
+    
 
 }
 function onStopButton() {
