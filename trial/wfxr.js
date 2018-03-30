@@ -42,18 +42,31 @@ class WFXRSynth {
             });
         }
         this.osc.toMaster();
+
+        this.env = new Tone.AmplitudeEnvelope({
+            attack: this.conf.attack_time,
+            decay: this.conf.decay_time,
+            sustain: this.conf.sustain_punch,
+            release: this.conf.sustain_time
+        });
+        this.osc.connect(this.env);
+        this.env.toMaster();
     }
     play() {
         this.osc.start();
     }
+    stop() {
+        this.osc.stop();
+    }
 };
 
+
+var synth;
 
 function onPlayButton() {
     console.log("Play");
     
-    var synth = new WFXRSynth(current_conf);
-
+    synth = new WFXRSynth(current_conf);
     synth.play();
     
 //    noiseSynth.triggerAttackRelease("8n");
@@ -66,5 +79,6 @@ function onPlayButton() {
 
 }
 function onStopButton() {
-    console.log("Stop");    
+    console.log("Stop");
+    synth.stop()   ;
 }
