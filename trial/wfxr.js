@@ -103,3 +103,19 @@ function onStopButton() {
     console.log("Stop");
     synth.stop()   ;
 }
+
+function updateDisplayValues() {
+    names=["atk_time","sus_time","sus_punch","decay_time","start_freq","min_freq_co","slide","delta_slide",
+           "vib_pitch","vib_speed","chg_am", "chg_sp", "sq_duty","sq_sweep","repeat_speed","ph_ofs","ph_sweep",
+           "lpf_co", "lpf_co_sweep","lpf_reso", "hpf_co", "hpf_co_sweep", "hpf_reso",
+           "playback_vol"
+          ];
+    for(var i in names) {
+        document.getElementById(names[i]+"_val").innerHTML = document.getElementById(names[i]).value;
+    }    
+}
+function onSlider(tgt) {
+    console.log(tgt.id, tgt.value);
+    updateDisplayValues();
+}
+
