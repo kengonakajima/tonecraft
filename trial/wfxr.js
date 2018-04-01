@@ -31,39 +31,73 @@ class WFXRSynth {
         case "sine":
         case "sawtooth":
         case "square":
-/*            
-            this.osc= new Tone.Oscillator({
-                volume: this.conf.volume,
+
+            this.osc = new Tone.OmniOscillator({
+                detune:0,
                 type: this.conf.osc_type,
+                phase:0,
+                volume: this.conf.playback_volume,
                 frequency: this.conf.start_freq
             });
-*/
-            this.synth = new Tone.Synth({
-                oscillator: {
-                    detune:0,
-                    type: this.conf.osc_type,
-                    phase:0,
-                    volume:1
-                },
-                envelope: envconf
+
+            this.amp_env = new Tone.AmplitudeEnvelope({
+                attack: this.conf.attack_time,
+                decay: this.conf.decay_time,
+                sustain: this.conf.sustain_level,
+                release: this.conf.release_time
             });
-            this.synth.toMaster();
+
+            /*
+
+            this.freqscale_env = new Tone.ScaledEnvelope({
+                min:0.5,
+                max:1,
+                exponent:1,
+ 	            attack: 0,
+                decay: 0.2,
+                sustain: 0.5,
+                release: 0.5
+            });
+            */
+            
+            this.freqscale_env = new Tone.FrequencyEnvelope({                              
+                "attack": 0.5,                                                    
+                "decay": 0.1,                                                      
+                "sustain": 1,                                                       
+                "release": 2,                                                       
+                "baseFrequency": "A2",                                              
+                "octaves": 8.7                                                      
+            }).connect(this.osc.frequency);                                             
+            
+
             break;
         case "noise":
+            /*            
             this.synth = new Tone.NoiseSynth({
                 noise : { type: "white" },
                 envelope: envconf
             });
             this.synth.toMaster();
+            */
             break;
         }
     }
     play() {
         var len="8n";
         if(this.conf.osc_type=="noise") {
-            this.synth.triggerAttackRelease(len); 
+//            this.synth.triggerAttackRelease(len); 
         } else {
-            this.synth.triggerAttackRelease(this.conf.start_freq,len);
+//            this.osc.start();
+            this.amp_env.toMaster();
+            this.osc.connect(this.amp_env).start();
+            this.freqscale_env.triggerAttackRelease("8t");
+            this.amp_env.triggerAttackRelease("8t");
+
+
+
+            
+//            this.amp_env.toMaster();            
+//            this.synth.triggerAttackRelease(this.conf.start_freq,len);
             //        this.synth.triggerAttackRelease("440","1"); // "C4", "8n" とかでもok
         }
 
@@ -138,7 +172,7 @@ function updateValues() {
         var val=document.getElementById(names[i]).value;
         var min = minmax[names[i]][0], max = minmax[names[i]][1];
         var final_val = min + (val/1000.0) * ( max - min );
-        console.log(names[i], val, final_val);
+        //        console.log(names[i], val, final_val);
         current_conf[names[i]]=final_val;
         document.getElementById(names[i]+"_val").innerHTML = final_val;        
     }
