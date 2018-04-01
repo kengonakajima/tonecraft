@@ -137,4 +137,7 @@ function onSlider(tgt) {
     updateValues();
     onPlayButton();
 }
-
+function onOscButton(type) {
+    console.log("onOscButton:",type);
+    current_conf.osc_type=type;
+}
