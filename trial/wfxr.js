@@ -20,9 +20,12 @@ class WFXRSynth {
             this.conf[i]=opts[i];
         }
 
-        // TODO: validation
-        
-        //var noiseSynth = new Tone.NoiseSynth().toMaster();
+        var envconf = {
+            attack: this.conf.attack_time,
+            decay: this.conf.decay_time,
+            sustain: this.conf.sustain_level,
+            release: this.conf.release_time
+        };
 
         switch(this.conf.osc_type) {
         case "sine":
@@ -42,20 +45,28 @@ class WFXRSynth {
                     phase:0,
                     volume:1
                 },
-                envelope: {
-                    attack: this.conf.attack_time,
-                    decay: this.conf.decay_time,
-                    sustain: this.conf.sustain_level,
-                    release: this.conf.release_time
-                }
+                envelope: envconf
             });
             this.synth.toMaster();
+            break;
+        case "noise":
+            this.synth = new Tone.NoiseSynth({
+                noise : { type: "white" },
+                envelope: envconf
+            });
+            this.synth.toMaster();
+            break;
         }
     }
     play() {
         var len="8n";
-        this.synth.triggerAttackRelease(this.conf.start_freq,len);
-//        this.synth.triggerAttackRelease("440","1"); // "C4", "8n" とかでもok
+        if(this.conf.osc_type=="noise") {
+            this.synth.triggerAttackRelease(len); 
+        } else {
+            this.synth.triggerAttackRelease(this.conf.start_freq,len);
+            //        this.synth.triggerAttackRelease("440","1"); // "C4", "8n" とかでもok
+        }
+
     }
     stop() {
         this.osc.stop();
@@ -89,7 +100,8 @@ function onStopButton() {
 
 function updateValues() {
     names=["attack_time","sustain_time","sustain_level","decay_time", "release_time",
-           "start_freq","min_freq_co","slide","delta_slide",
+           "start_freq",
+           "slide","delta_slide",
            "vib_pitch","vib_speed",
            "change_amount", "change_speed",
            "sq_duty","sq_sweep","repeat_speed","ph_ofs","ph_sweep",
@@ -103,7 +115,6 @@ function updateValues() {
         decay_time: [0,5],
         release_time: [0,5],
         start_freq: [0,5000],
-        min_freq_co: [0,1], // TODO: used in laser/shoot only
         slide: [0,1],
         delta_slide: [0,1],
         vib_pitch: [0,1],
