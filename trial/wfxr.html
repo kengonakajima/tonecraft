@@ -9,7 +9,7 @@
     <script src="../Tone.min.js"></script>
     <script src="./wfxr.js"></script>    
   </head>
-  <body onload="updateDisplayValues();">
+  <body onload="updateValues();">
 
 <button>Square</button> <button>Sawtooth</button> <button>Sine</button> <button>Noise</button>
   
@@ -21,10 +21,11 @@
 
   <td>
 <table id="sliders">
-  <tr> <td>Attack time</td> <td><input id="atk_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> <td><span id="atk_time_val"></span></td></tr>
-  <tr> <td>Sustain time</td> <td><input id="sus_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="sus_time_val"></span></td></tr>
-  <tr> <td>Sustain punch</td> <td><input id="sus_punch" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="sus_punch_val"></span></td> </tr>
-  <tr> <td>Decay time</td> <td><input id="decay_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="decay_time_val"></span></td> </tr>      
+  <tr> <td>Attack time</td> <td><input id="attack_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> <td><span id="attack_time_val"></span></td></tr>
+  <tr> <td>Sustain time</td> <td><input id="sustain_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="sustain_time_val"></span></td></tr>
+  <tr> <td>Sustain level</td> <td><input id="sustain_level" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="sustain_level_val"></span></td> </tr>
+  <tr> <td>Decay time</td> <td><input id="decay_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="decay_time_val"></span></td> </tr>
+  <tr> <td>Release time</td> <td><input id="release_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="release_time_val"></span></td> </tr>        
 
   <tr> <td>&nbsp;</td></tr>
 
@@ -38,8 +39,8 @@
 
   <tr> <td>&nbsp;</td></tr>
 
-  <tr> <td>Change amount</td> <td><input id="chg_am" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="chg_am_val"></span></td> </tr>
-  <tr> <td>Change speed</td> <td><input id="chg_sp" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="chg_sp_val"></span></td> </tr>
+  <tr> <td>Change amount</td> <td><input id="change_amount" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="change_amount_val"></span></td> </tr>
+  <tr> <td>Change speed</td> <td><input id="change_speed" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="change_speed_val"></span></td> </tr>
 
   <tr> <td>&nbsp;</td></tr>
   

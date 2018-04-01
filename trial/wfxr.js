@@ -1,11 +1,12 @@
-
+// defaults
 var current_conf={
     osc_type:"sine",
     start_freq:440,
     attack_time:0.4,
-    sustain_time:0.5,
-    sustain_punch:1,
-    decay_time:2
+    sustain_rate:0.5,
+    decay_time:2,
+    playback_volume:1,
+    release_time:1
 };
 
 
@@ -13,14 +14,6 @@ var current_conf={
 class WFXRSynth {
     constructor(opts) {
         this.conf={};
-        // default values
-        this.conf.osc_type="sawtooth";
-        this.conf.start_freq = 440;
-        this.conf.attack_time=0;
-        this.conf.sustain_time=0.5;
-        this.conf.sustain_punch=0.5;
-        this.conf.decay_time=1;
-        this.conf.volume=1;
         
         // options
         for(var i in opts) {
@@ -50,30 +43,19 @@ class WFXRSynth {
                     volume:1
                 },
                 envelope: {
-                    attack: 0.1,
-                    decay:0.3,
-                    sustain:0.2,
-                    release:1
+                    attack: this.conf.attack_time,
+                    decay: this.conf.decay_time,
+                    sustain: this.conf.sustain_level,
+                    release: this.conf.release_time
                 }
             });
             this.synth.toMaster();
         }
-        //        this.osc.toMaster();
-/*        
-        this.env = new Tone.AmplitudeEnvelope({
-            attack: this.conf.attack_time,
-            decay: this.conf.decay_time,
-            sustain: this.conf.sustain_punch,
-            release: this.conf.sustain_time
-        });
-        this.osc.connect(this.env);
-        this.env.toMaster();
-        */
-
     }
     play() {
-//        this.osc.start();        
-        this.synth.triggerAttackRelease("440","4"); // "C4", "8n" とかでもok
+        var len="8n";
+        this.synth.triggerAttackRelease(this.conf.start_freq,len);
+//        this.synth.triggerAttackRelease("440","1"); // "C4", "8n" とかでもok
     }
     stop() {
         this.osc.stop();
@@ -104,18 +86,55 @@ function onStopButton() {
     synth.stop()   ;
 }
 
-function updateDisplayValues() {
-    names=["atk_time","sus_time","sus_punch","decay_time","start_freq","min_freq_co","slide","delta_slide",
-           "vib_pitch","vib_speed","chg_am", "chg_sp", "sq_duty","sq_sweep","repeat_speed","ph_ofs","ph_sweep",
+
+function updateValues() {
+    names=["attack_time","sustain_time","sustain_level","decay_time", "release_time",
+           "start_freq","min_freq_co","slide","delta_slide",
+           "vib_pitch","vib_speed",
+           "change_amount", "change_speed",
+           "sq_duty","sq_sweep","repeat_speed","ph_ofs","ph_sweep",
            "lpf_co", "lpf_co_sweep","lpf_reso", "hpf_co", "hpf_co_sweep", "hpf_reso",
            "playback_vol"
           ];
+    minmax= {
+        attack_time: [0,5],
+        sustain_time: [0,5],
+        sustain_level: [0,1],
+        decay_time: [0,5],
+        release_time: [0,5],
+        start_freq: [0,5000],
+        min_freq_co: [0,1], // TODO: used in laser/shoot only
+        slide: [0,1],
+        delta_slide: [0,1],
+        vib_pitch: [0,1],
+        vib_speed: [0,1],
+        change_amount: [0,1],
+        change_speed: [0,1],
+        sq_duty: [0,1],
+        sq_sweep: [0,1],
+        repeat_speed: [0,1],
+        ph_ofs: [0,1],
+        ph_sweep: [0,1],
+        lpf_co: [0,1],
+        lpf_co_sweep: [0,1],
+        lpf_reso: [0,1],
+        hpf_co: [0,1],
+        hpf_co_sweep: [0,1],
+        hpf_reso: [0,1],
+        playback_vol: [0,1]        
+    };
     for(var i in names) {
-        document.getElementById(names[i]+"_val").innerHTML = document.getElementById(names[i]).value;
-    }    
+        var val=document.getElementById(names[i]).value;
+        var min = minmax[names[i]][0], max = minmax[names[i]][1];
+        var final_val = min + (val/1000.0) * ( max - min );
+        console.log(names[i], val, final_val);
+        current_conf[names[i]]=final_val;
+        document.getElementById(names[i]+"_val").innerHTML = final_val;        
+    }
 }
 function onSlider(tgt) {
     console.log(tgt.id, tgt.value);
-    updateDisplayValues();
+    updateValues();
+    onPlayButton();
 }
 
