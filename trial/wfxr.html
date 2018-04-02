@@ -24,54 +24,54 @@
 
   <td>
 <table id="sliders">
-  <tr> <td>Attack time</td> <td><input id="attack_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> <td><span id="attack_time_val"></span></td></tr>
-  <tr> <td>Sustain time</td> <td><input id="sustain_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="sustain_time_val"></span></td></tr>
-  <tr> <td>Sustain level</td> <td><input id="sustain_level" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="sustain_level_val"></span></td> </tr>
-  <tr> <td>Decay time</td> <td><input id="decay_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="decay_time_val"></span></td> </tr>
-  <tr> <td>Release time</td> <td><input id="release_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="release_time_val"></span></td> </tr>        
+  <tr> <td>Attack time</td> <td><input id="attack_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
+  <tr> <td>Sustain time</td> <td><input id="sustain_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td></tr>
+  <tr> <td>Sustain level</td> <td><input id="sustain_level" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
+  <tr> <td>Decay time</td> <td><input id="decay_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
+  <tr> <td>Release time</td> <td><input id="release_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>        
 
   <tr> <td>&nbsp;</td></tr>
 
 
-  <tr> <td>Start frequency</td> <td><input id="start_freq" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="start_freq_val"></span></td> </tr>
-  <tr> <td>freq_attack_time</td> <td><input id="freq_attack_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="freq_attack_time_val"></span></td> </tr>
-  <tr> <td>freq_decay_time</td> <td><input id="freq_decay_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="freq_decay_time_val"></span></td> </tr>
-  <tr> <td>freq_sustain_level</td> <td><input id="freq_sustain_level" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="freq_sustain_level_val"></span></td> </tr>
-  <tr> <td>freq_release_time</td> <td><input id="freq_release_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="freq_release_time_val"></span></td> </tr>
-  <tr> <td>freq_octave</td> <td><input id="freq_octave" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="freq_octave_val"></span></td> </tr>
+  <tr> <td>Start frequency</td> <td><input id="start_freq" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
+  <tr> <td>freq_attack_time</td> <td><input id="freq_attack_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
+  <tr> <td>freq_decay_time</td> <td><input id="freq_decay_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
+  <tr> <td>freq_sustain_level</td> <td><input id="freq_sustain_level" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
+  <tr> <td>freq_release_time</td> <td><input id="freq_release_time" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
+  <tr> <td>freq_octave</td> <td><input id="freq_octave" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
   
-  <tr> <td>Vibrato depth</td> <td><input id="vib_depth" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="vib_depth_val"></span></td> </tr>
-  <tr> <td>Vibrato freq</td> <td><input id="vib_freq" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="vib_freq_val"></span></td> </tr>
+  <tr> <td>Vibrato depth</td> <td><input id="vib_depth" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
+  <tr> <td>Vibrato freq</td> <td><input id="vib_freq" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
   <tr> <td>Vibrato pattern</td> <td><button onclick="onVibButton('sine');">sine</button> <button onclick="onVibButton('sawtooth');">sawtooth</button> <button onclick="onVibButton('square');">square</button> </td><td>hoge</td> </tr>
   
   <tr> <td>&nbsp;</td></tr>
 
-  <tr> <td>Change amount</td> <td><input id="change_amount" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="change_amount_val"></span></td> </tr>
-  <tr> <td>Change speed</td> <td><input id="change_speed" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="change_speed_val"></span></td> </tr>
+  <tr> <td>Change amount</td> <td><input id="change_amount" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
+  <tr> <td>Change speed</td> <td><input id="change_speed" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
 
   <tr> <td>&nbsp;</td></tr>
   
-  <tr> <td>Square duty</td> <td><input id="sq_duty" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="sq_duty_val"></span></td> </tr>
-  <tr> <td>Duty sweep</td> <td><input id="sq_sweep" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="sq_sweep_val"></span></td> </tr>
+  <tr> <td>Square duty</td> <td><input id="sq_duty" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
+  <tr> <td>Duty sweep</td> <td><input id="sq_sweep" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
 
   <tr> <td>&nbsp;</td></tr>
   
-  <tr> <td>Repeat speed</td> <td><input id="repeat_speed" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="repeat_speed_val"></span></td> </tr>
+  <tr> <td>Repeat speed</td> <td><input id="repeat_speed" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
 
   <tr> <td>&nbsp;</td></tr>
 
-  <tr> <td>Phaser offset</td> <td><input id="ph_ofs" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="ph_ofs_val"></span></td> </tr>
-  <tr> <td>Phaser sweep</td> <td><input id="ph_sweep" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="ph_sweep_val"></span></td> </tr>
+  <tr> <td>Phaser offset</td> <td><input id="ph_ofs" type="range" min=0 max=1000 onchange="onSlider(this)"> </td></tr>
+  <tr> <td>Phaser sweep</td> <td><input id="ph_sweep" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
 
   <tr> <td>&nbsp;</td></tr>
 
-  <tr> <td>Low-pass filter cutoff</td> <td><input id="lpf_co" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> <td><span id="lpf_co_val"></span></td></tr>
-  <tr> <td>Low-pass filter cutoff sweep</td> <td><input id="lpf_co_sweep" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="lpf_co_sweep_val"></span></td> </tr>
-  <tr> <td>Low-pass filter resonance</td> <td><input id="lpf_reso" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="lpf_reso_val"></span></td> </tr>
+  <tr> <td>Low-pass filter cutoff</td> <td><input id="lpf_co" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
+  <tr> <td>Low-pass filter cutoff sweep</td> <td><input id="lpf_co_sweep" type="range" min=0 max=1000 onchange="onSlider(this)"> </td></tr>
+  <tr> <td>Low-pass filter resonance</td> <td><input id="lpf_reso" type="range" min=0 max=1000 onchange="onSlider(this)"> </td></tr>
 
-  <tr> <td>High-pass filter cutoff</td> <td><input id="hpf_co" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> <td><span id="hpf_co_val"></span></td></tr>
-  <tr> <td>High-pass filter cutoff sweep</td> <td><input id="hpf_co_sweep" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="hpf_co_sweep_val"></span></td> </tr>
-  <tr> <td>High-pass filter resonance</td> <td><input id="hpf_reso" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="hpf_reso_val"></span></td> </tr>
+  <tr> <td>High-pass filter cutoff</td> <td><input id="hpf_co" type="range" min=0 max=1000 onchange="onSlider(this)"> </td></tr>
+  <tr> <td>High-pass filter cutoff sweep</td> <td><input id="hpf_co_sweep" type="range" min=0 max=1000 onchange="onSlider(this)"> </td></tr>
+  <tr> <td>High-pass filter resonance</td> <td><input id="hpf_reso" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
 
   
 </table> 
@@ -81,20 +81,19 @@
     <td>
       <table name="controls">
 
-      <button class="basetype">Pickup/coin</button><BR>
-      <button class="basetype">Laser/shoot</button><BR>
-      <button class="basetype">Explosion</button><BR>
-      <button class="basetype">Powerup</button><BR>
-      <button class="basetype">Hit/hurt</button><BR>
-      <button class="basetype">Jump</button><BR>
-      <button class="basetype">Blip/select</button><BR>
-      <button class="basetype">Random</button>      <BR>
+      <button class="basetype" onclick="onTemplateButton('pickup');">Pickup/coin</button><BR>
+      <button class="basetype" onclick="onTemplateButton('shoot');">Laser/shoot</button><BR>
+      <button class="basetype" onclick="onTemplateButton('explosion');">Explosion</button><BR>
+      <button class="basetype" onclick="onTemplateButton('powerup');">Powerup</button><BR>
+      <button class="basetype" onclick="onTemplateButton('hurt');">Hit/hurt</button><BR>
+      <button class="basetype" onclick="onTemplateButton('jump');">Jump</button><BR>
+      <button class="basetype" onclick="onTemplateButton('blip');">Blip/select</button><BR>
+      <button class="basetype" onclick="onTemplateButton('random');">Random</button>      <BR>
       <BR><BR>
         
       <tr><td><button class="basetype" onclick="onPlayButton()">Play</button></td> </tr>
-      <tr><td><button class="basetype" onclick="onStopButton()">Stop</button></td> </tr>      
       <tr><td><button class="basetype">Play looping</button></td> </tr>
-      <tr><td>playback volume<BR><input id="playback_vol" type="range" min=0 max=1000 onchange="onSlider(this)"> </td><td><span id="playback_vol_val"></span></td> </tr>
+      <tr><td>playback volume<BR><input id="playback_vol" type="range" min=0 max=1000 onchange="onSlider(this)"> </td> </tr>
       </table>
     </td>
 </table>    

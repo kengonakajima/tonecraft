@@ -1,3 +1,32 @@
+// Returns number between 0 (inclusive) and 1.0 (exclusive),
+// just like Math.random().
+var moyai_rng_w = 123456789;
+var moyai_rng_z = 987654321;
+var moyai_rng_mask = 0xffffffff;
+function moyai_rng_random()
+{
+    moyai_rng_z = (36969 * (moyai_rng_z & 65535) + (moyai_rng_z >> 16)) & moyai_rng_mask;
+    moyai_rng_w = (18000 * (moyai_rng_w & 65535) + (moyai_rng_w >> 16)) & moyai_rng_mask;
+    var result = ((moyai_rng_z << 16) + moyai_rng_w) & moyai_rng_mask;
+    result /= 4294967296;
+    return result + 0.5;
+}
+
+irange = function(a,b) {
+    return Math.floor(range(a,b));
+}
+range = function(a,b) {
+    var small=a,big=b;
+    if(big<small) {
+        var tmp = big;
+        big=small;
+        small=tmp;
+    }
+    var out=(small + (big-small)*moyai_rng_random());
+    if(out==b)return a; // in very rare case, out==b
+    return out;
+}
+
 // defaults
 var current_conf={
     osc_type:"sine",
@@ -90,17 +119,21 @@ class WFXRSynth {
 
 
             this.osc.connect(this.amp_env).start();
-            this.freqscale_env.triggerAttackRelease("2t");
-            this.amp_env.triggerAttackRelease("2t");
+            this.freqscale_env.triggerAttackRelease(this.conf.release_time);
+            this.amp_env.triggerAttackRelease(this.conf.release_time);
 
             var this_synth=this;
-            Tone.Transport.schedule( function(t) {
-                Tone.Transport.stop();
-                Tone.Transport.clear();                
+            setTimeout(function() {
                 var mul = Math.pow( 2, this_synth.conf.change_amount );
                 this_synth.freqscale_env.baseFrequency *= mul;
-            },this_synth.conf.change_speed);
-            Tone.Transport.start();                
+
+                console.log("mul:",mul, "rel:", this_synth.conf.release_time);
+                
+                this_synth.freqscale_env.triggerAttackRelease(this_synth.conf.release_time);
+//                this_synth.amp_env.triggerAttackRelease(this_synth.conf.release_time);
+                
+            },this_synth.conf.change_speed*1000);
+
 
 
 
@@ -136,61 +169,60 @@ function onPlayButton() {
     
 
 }
-function onStopButton() {
-    console.log("Stop");
-    synth.stop()   ;
+
+names=["attack_time","sustain_time","sustain_level","decay_time", "release_time",
+       "start_freq",
+       "freq_attack_time","freq_decay_time", "freq_release_time", "freq_sustain_level","freq_octave",
+       "vib_depth","vib_freq",
+       "change_amount", "change_speed",
+       "sq_duty","sq_sweep","repeat_speed","ph_ofs","ph_sweep",
+       "lpf_co", "lpf_co_sweep","lpf_reso", "hpf_co", "hpf_co_sweep", "hpf_reso",
+       "playback_vol"
+      ];
+
+minmax= {
+    attack_time: [0,5],
+    sustain_time: [0,5],
+    sustain_level: [0,1],
+    decay_time: [0,5],
+    release_time: [0,5],
+    start_freq: [0,5000],
+    freq_attack_time: [0,5],
+    freq_decay_time: [0,5],
+    freq_release_time: [0,5],
+    freq_sustain_level: [0,1],
+    freq_octave: [-10,10],
+    delta_slide: [0,1],
+    vib_depth: [0,5],
+    vib_freq: [0,100],
+    change_amount: [-5,5],
+    change_speed: [0,2],
+    sq_duty: [0,1],
+    sq_sweep: [0,1],
+    repeat_speed: [0,1],
+    ph_ofs: [0,1],
+    ph_sweep: [0,1],
+    lpf_co: [0,1],
+    lpf_co_sweep: [0,1],
+    lpf_reso: [0,1],
+    hpf_co: [0,1],
+    hpf_co_sweep: [0,1],
+    hpf_reso: [0,1],
+    playback_vol: [0,1]        
+};
+
+function setSlider(name,value) {
+    var elem=document.getElementById(name);
+    elem.value=value;
 }
-
-
 function updateValues() {
-    names=["attack_time","sustain_time","sustain_level","decay_time", "release_time",
-           "start_freq",
-           "freq_attack_time","freq_decay_time", "freq_release_time", "freq_sustain_level","freq_octave",
-           "vib_depth","vib_freq",
-           "change_amount", "change_speed",
-           "sq_duty","sq_sweep","repeat_speed","ph_ofs","ph_sweep",
-           "lpf_co", "lpf_co_sweep","lpf_reso", "hpf_co", "hpf_co_sweep", "hpf_reso",
-           "playback_vol"
-          ];
-    minmax= {
-        attack_time: [0,5],
-        sustain_time: [0,5],
-        sustain_level: [0,1],
-        decay_time: [0,5],
-        release_time: [0,5],
-        start_freq: [0,5000],
-        freq_attack_time: [0,5],
-        freq_decay_time: [0,5],
-        freq_release_time: [0,5],
-        freq_sustain_level: [0,1],
-        freq_octave: [-10,10],
-        delta_slide: [0,1],
-        vib_depth: [0,5],
-        vib_freq: [0,100],
-        change_amount: [-10,10],
-        change_speed: [0,2],
-        sq_duty: [0,1],
-        sq_sweep: [0,1],
-        repeat_speed: [0,1],
-        ph_ofs: [0,1],
-        ph_sweep: [0,1],
-        lpf_co: [0,1],
-        lpf_co_sweep: [0,1],
-        lpf_reso: [0,1],
-        hpf_co: [0,1],
-        hpf_co_sweep: [0,1],
-        hpf_reso: [0,1],
-        playback_vol: [0,1]        
-    };
     for(var i in names) {
         var elem=document.getElementById(names[i]);
         if(!elem) console.log("Element not defined:",names[i]);
         var val=elem.value;
         var min = minmax[names[i]][0], max = minmax[names[i]][1];
         var final_val = min + (val/1000.0) * ( max - min );
-        //        console.log(names[i], val, final_val);
         current_conf[names[i]]=final_val;
-        document.getElementById(names[i]+"_val").innerHTML = final_val;        
     }
 }
 function onSlider(tgt) {
@@ -207,4 +239,34 @@ function onVibButton(type) {
     console.log("onVibButton:",type);
     current_conf.vib_type=type;
     onPlayButton();    
+}
+
+function onTemplateButton(type) {
+    switch(type) {
+    case 'pickup':
+        current_conf.osc_type="square";
+        setSlider("attack_time",0);
+        setSlider("decay_time",range(100,300));        
+        setSlider("sustain_time",0);
+        setSlider("sustain_level",range(1,20));
+        setSlider("release_time",range(1,100));
+        setSlider("start_freq", range(30,700) );
+        setSlider("vib_depth", 0);
+        setSlider("vib_freq", 0);
+        setSlider("change_amount",range(520,600));
+        setSlider("change_speed",range(50,120));        
+        break;
+    case 'shoot':
+    case 'explosion':
+    case 'powerup':
+    case 'hurt':
+    case 'jump':
+    case 'blip':
+    case 'random':
+    default:
+        break;
+    }
+
+    updateValues();
+    onPlayButton();
 }
