@@ -47,19 +47,6 @@ class WFXRSynth {
                 release: this.conf.release_time
             });
 
-            /*
-
-            this.freqscale_env = new Tone.ScaledEnvelope({
-                min:0.5,
-                max:1,
-                exponent:1,
- 	            attack: 0,
-                decay: 0.2,
-                sustain: 0.5,
-                release: 0.5
-            });
-            */
-            
             this.freqscale_env = new Tone.FrequencyEnvelope({                              
                 "attack": this.conf.freq_attack_time,                                                    
                 "decay": this.conf.freq_decay_time,                                                      
@@ -68,6 +55,13 @@ class WFXRSynth {
                 "baseFrequency": this.conf.start_freq,
                 "octaves": this.conf.freq_octave
             }).connect(this.osc.frequency);                                             
+
+            this.vibrato = new Tone.Vibrato({
+               maxDelay  : 0.005 ,
+                frequency  : 8 ,
+                depth  : 0.5 ,
+                type  : "sine"
+            });
             
 
             break;
@@ -88,7 +82,9 @@ class WFXRSynth {
 //            this.synth.triggerAttackRelease(len); 
         } else {
 //            this.osc.start();
-            this.amp_env.toMaster();
+            //            this.amp_env.toMaster();
+            this.amp_env.connect(this.vibrato);//.toMaster();
+            this.vibrato.toMaster();
             this.osc.connect(this.amp_env).start();
             this.freqscale_env.triggerAttackRelease("8t");
             this.amp_env.triggerAttackRelease("8t");
