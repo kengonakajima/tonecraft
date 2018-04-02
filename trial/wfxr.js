@@ -6,7 +6,8 @@ var current_conf={
     sustain_rate:0.5,
     decay_time:2,
     playback_volume:1,
-    release_time:1
+    release_time:1,
+    vib_type:"sine"
 };
 
 
@@ -58,11 +59,10 @@ class WFXRSynth {
 
             this.vibrato = new Tone.Vibrato({
                maxDelay  : 0.005 ,
-                frequency  : 8 ,
-                depth  : 0.5 ,
-                type  : "sine"
+                frequency  : this.conf.vib_freq,
+                depth  : this.conf.vib_depth ,
+                type  : this.conf.vib_type
             });
-            
 
             break;
         case "noise":
@@ -83,11 +83,13 @@ class WFXRSynth {
         } else {
 //            this.osc.start();
             //            this.amp_env.toMaster();
-            this.amp_env.connect(this.vibrato);//.toMaster();
+            this.amp_env.connect(this.vibrato);
             this.vibrato.toMaster();
+
+
             this.osc.connect(this.amp_env).start();
-            this.freqscale_env.triggerAttackRelease("8t");
-            this.amp_env.triggerAttackRelease("8t");
+            this.freqscale_env.triggerAttackRelease("2t");
+            this.amp_env.triggerAttackRelease("2t");
 
 
 
@@ -132,7 +134,7 @@ function updateValues() {
     names=["attack_time","sustain_time","sustain_level","decay_time", "release_time",
            "start_freq",
            "freq_attack_time","freq_decay_time", "freq_release_time", "freq_sustain_level","freq_octave",
-           "vib_pitch","vib_speed",
+           "vib_depth","vib_freq",
            "change_amount", "change_speed",
            "sq_duty","sq_sweep","repeat_speed","ph_ofs","ph_sweep",
            "lpf_co", "lpf_co_sweep","lpf_reso", "hpf_co", "hpf_co_sweep", "hpf_reso",
@@ -151,8 +153,8 @@ function updateValues() {
         freq_sustain_level: [0,1],
         freq_octave: [1,10],
         delta_slide: [0,1],
-        vib_pitch: [0,1],
-        vib_speed: [0,1],
+        vib_depth: [0,5],
+        vib_freq: [0,100],
         change_amount: [0,1],
         change_speed: [0,1],
         sq_duty: [0,1],
@@ -187,4 +189,10 @@ function onSlider(tgt) {
 function onOscButton(type) {
     console.log("onOscButton:",type);
     current_conf.osc_type=type;
+    onPlayButton();    
+}
+function onVibButton(type) {
+    console.log("onVibButton:",type);
+    current_conf.vib_type=type;
+    onPlayButton();    
 }
