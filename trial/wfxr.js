@@ -57,6 +57,43 @@ class WFXRSynth {
             release: this.conf.release_time
         };
 
+        this.amp_env = new Tone.AmplitudeEnvelope({
+            attack: this.conf.attack_time,
+            decay: this.conf.decay_time,
+            sustain: this.conf.sustain_level,
+            release: this.conf.release_time
+        });
+
+        this.hpf = new Tone.Filter({
+            frequency: this.conf.hpf_co,
+            type: "highpass",
+            rolloff: -12,
+            Q:1                
+        });
+
+        this.lpf = new Tone.Filter({
+            frequency: this.conf.lpf_co,
+            type: "lowpass",
+            rolloff: -12,
+            Q:1                                
+        });
+
+        this.vibrato = new Tone.Vibrato({
+            maxDelay  : 0.005 ,
+            frequency  : this.conf.vib_freq,
+            depth  : this.conf.vib_depth ,
+            type  : this.conf.vib_type
+        });
+
+        this.freqscale_env = new Tone.FrequencyEnvelope({                              
+            "attack": this.conf.freq_attack_time,                                                    
+            "decay": this.conf.freq_decay_time,                                                      
+            "sustain": this.conf.freq_sustain_level,                                                       
+            "release": this.conf.freq_release_time,                                                       
+            "baseFrequency": this.conf.start_freq,
+            "octaves": this.conf.freq_octave
+        });
+        
         switch(this.conf.osc_type) {
         case "sine":
         case "sawtooth":
@@ -68,63 +105,28 @@ class WFXRSynth {
                 volume: this.conf.playback_volume,
                 frequency: this.conf.start_freq
             });
-
-            this.amp_env = new Tone.AmplitudeEnvelope({
-                attack: this.conf.attack_time,
-                decay: this.conf.decay_time,
-                sustain: this.conf.sustain_level,
-                release: this.conf.release_time
-            });
-
-            this.freqscale_env = new Tone.FrequencyEnvelope({                              
-                "attack": this.conf.freq_attack_time,                                                    
-                "decay": this.conf.freq_decay_time,                                                      
-                "sustain": this.conf.freq_sustain_level,                                                       
-                "release": this.conf.freq_release_time,                                                       
-                "baseFrequency": this.conf.start_freq,
-                "octaves": this.conf.freq_octave
-            }).connect(this.osc.frequency);                                             
-
-            this.vibrato = new Tone.Vibrato({
-               maxDelay  : 0.005 ,
-                frequency  : this.conf.vib_freq,
-                depth  : this.conf.vib_depth ,
-                type  : this.conf.vib_type
-            });
-
-            this.hpf = new Tone.Filter({
-                frequency: this.conf.hpf_co,
-                type: "highpass",
-                rolloff: -12,
-                Q:1                
-            });
-
-            this.lpf = new Tone.Filter({
-                frequency: this.conf.lpf_co,
-                type: "lowpass",
-                rolloff: -12,
-                Q:1                                
-            });
-
             break;
         case "noise":
-            /*            
-            this.synth = new Tone.NoiseSynth({
-                noise : { type: "white" },
-                envelope: envconf
+            this.noise = new Tone.Noise({
+                type: "pink"
             });
-            this.synth.toMaster();
-            */
             break;
         }
     }
     play() {
         var len="8n";
         if(this.conf.osc_type=="noise") {
+            this.noise.connect(this.amp_env);
+            this.amp_env.toMaster();
+            this.noise.start();
+            this.amp_env.triggerAttackRelease(this.conf.release_time);
+            
 //            this.synth.triggerAttackRelease(len); 
         } else {
 //            this.osc.start();
             //            this.amp_env.toMaster();
+
+            this.freqscale_env.connect(this.osc.frequency);                                                         
             this.amp_env.connect(this.vibrato);
 //            this.vibrato.toMaster();
             this.vibrato.connect(this.hpf);
@@ -303,6 +305,15 @@ function onTemplateButton(type) {
         
         break;
     case 'explosion':
+        current_conf.osc_type="noise";
+
+        setSlider("attack_time",0);
+        setSlider("decay_time",range(100,300));        
+        setSlider("sustain_time",0);
+        setSlider("sustain_level",range(1,20));
+        setSlider("release_time",range(1,100));
+        
+        break;
     case 'powerup':
     case 'hurt':
     case 'jump':
