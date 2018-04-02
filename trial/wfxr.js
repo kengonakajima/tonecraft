@@ -61,12 +61,12 @@ class WFXRSynth {
             */
             
             this.freqscale_env = new Tone.FrequencyEnvelope({                              
-                "attack": 0.5,                                                    
-                "decay": 0.1,                                                      
-                "sustain": 1,                                                       
-                "release": 2,                                                       
-                "baseFrequency": "A2",                                              
-                "octaves": 8.7                                                      
+                "attack": this.conf.freq_attack_time,                                                    
+                "decay": this.conf.freq_decay_time,                                                      
+                "sustain": this.conf.freq_sustain_level,                                                       
+                "release": this.conf.freq_release_time,                                                       
+                "baseFrequency": this.conf.start_freq,
+                "octaves": this.conf.freq_octave
             }).connect(this.osc.frequency);                                             
             
 
@@ -135,7 +135,7 @@ function onStopButton() {
 function updateValues() {
     names=["attack_time","sustain_time","sustain_level","decay_time", "release_time",
            "start_freq",
-           "slide","delta_slide",
+           "freq_attack_time","freq_decay_time", "freq_release_time", "freq_sustain_level","freq_octave",
            "vib_pitch","vib_speed",
            "change_amount", "change_speed",
            "sq_duty","sq_sweep","repeat_speed","ph_ofs","ph_sweep",
@@ -149,7 +149,11 @@ function updateValues() {
         decay_time: [0,5],
         release_time: [0,5],
         start_freq: [0,5000],
-        slide: [0,1],
+        freq_attack_time: [0,5],
+        freq_decay_time: [0,5],
+        freq_release_time: [0,5],
+        freq_sustain_level: [0,1],
+        freq_octave: [1,10],
         delta_slide: [0,1],
         vib_pitch: [0,1],
         vib_speed: [0,1],
@@ -169,7 +173,9 @@ function updateValues() {
         playback_vol: [0,1]        
     };
     for(var i in names) {
-        var val=document.getElementById(names[i]).value;
+        var elem=document.getElementById(names[i]);
+        if(!elem) console.log("Element not defined:",names[i]);
+        var val=elem.value;
         var min = minmax[names[i]][0], max = minmax[names[i]][1];
         var final_val = min + (val/1000.0) * ( max - min );
         //        console.log(names[i], val, final_val);
