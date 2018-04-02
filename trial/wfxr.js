@@ -64,6 +64,8 @@ class WFXRSynth {
                 type  : this.conf.vib_type
             });
 
+
+
             break;
         case "noise":
             /*            
@@ -90,6 +92,16 @@ class WFXRSynth {
             this.osc.connect(this.amp_env).start();
             this.freqscale_env.triggerAttackRelease("2t");
             this.amp_env.triggerAttackRelease("2t");
+
+            var this_synth=this;
+            Tone.Transport.schedule( function(t) {
+                Tone.Transport.stop();
+                Tone.Transport.clear();                
+                var mul = Math.pow( 2, this_synth.conf.change_amount );
+                this_synth.freqscale_env.baseFrequency *= mul;
+            },this_synth.conf.change_speed);
+            Tone.Transport.start();                
+
 
 
 
@@ -151,12 +163,12 @@ function updateValues() {
         freq_decay_time: [0,5],
         freq_release_time: [0,5],
         freq_sustain_level: [0,1],
-        freq_octave: [1,10],
+        freq_octave: [-10,10],
         delta_slide: [0,1],
         vib_depth: [0,5],
         vib_freq: [0,100],
-        change_amount: [0,1],
-        change_speed: [0,1],
+        change_amount: [-10,10],
+        change_speed: [0,2],
         sq_duty: [0,1],
         sq_sweep: [0,1],
         repeat_speed: [0,1],
