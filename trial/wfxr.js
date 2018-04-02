@@ -86,14 +86,20 @@ class WFXRSynth {
         });
 
         this.freqscale_env = new Tone.FrequencyEnvelope({                              
-            "attack": this.conf.freq_attack_time,                                                    
-            "decay": this.conf.freq_decay_time,                                                      
-            "sustain": this.conf.freq_sustain_level,                                                       
-            "release": this.conf.freq_release_time,                                                       
-            "baseFrequency": this.conf.start_freq,
-            "octaves": this.conf.freq_octave
+            attack: this.conf.freq_attack_time,                                                    
+            decay: this.conf.freq_decay_time,                                                      
+            sustain: this.conf.freq_sustain_level,                                                       
+            release: this.conf.freq_release_time,                                                       
+            baseFrequency: this.conf.start_freq,
+            octaves: this.conf.freq_octave
         });
-        
+
+        this.phaser = new Tone.Phaser({
+            frequency: 1,
+            octaves: 3,
+            baseFrequency: 100
+        });
+
         switch(this.conf.osc_type) {
         case "sine":
         case "sawtooth":
@@ -108,7 +114,11 @@ class WFXRSynth {
             break;
         case "noise":
             this.noise = new Tone.Noise({
-                type: "pink"
+                type: "white"
+            });
+            this.autof = new Tone.AutoFilter({
+                frequency: 8,
+                depth: 4
             });
             break;
         }
@@ -116,9 +126,16 @@ class WFXRSynth {
     play() {
         var len="8n";
         if(this.conf.osc_type=="noise") {
+            this.noise.connect(this.autof);
+            this.autof.connect(this.amp_env);
             this.noise.connect(this.amp_env);
-            this.amp_env.toMaster();
+            this.amp_env.connect(this.phaser);
+            this.phaser.connect(this.hpf);
+            this.hpf.connect(this.lpf);
+            this.lpf.toMaster();
+
             this.noise.start();
+            this.autof.start();
             this.amp_env.triggerAttackRelease(this.conf.release_time);
             
 //            this.synth.triggerAttackRelease(len); 
@@ -139,7 +156,6 @@ class WFXRSynth {
             this.amp_env.triggerAttackRelease(this.conf.release_time);
 
             if(this.conf.change_speed>0) {
-                console.log("CHANING*");
                 var this_synth=this;
                 setTimeout(function() {
                     var mul = Math.pow( 2, this_synth.conf.change_amount );
@@ -312,7 +328,9 @@ function onTemplateButton(type) {
         setSlider("sustain_time",0);
         setSlider("sustain_level",range(1,20));
         setSlider("release_time",range(1,100));
-        
+
+        setSlider("hpf_co",0);
+        setSlider("lpf_co",1000);        
         break;
     case 'powerup':
     case 'hurt':
