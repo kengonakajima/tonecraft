@@ -61,7 +61,6 @@ class WFXRSynth {
         case "sine":
         case "sawtooth":
         case "square":
-
             this.osc = new Tone.OmniOscillator({
                 detune:0,
                 type: this.conf.osc_type,
@@ -93,7 +92,19 @@ class WFXRSynth {
                 type  : this.conf.vib_type
             });
 
+            this.hpf = new Tone.Filter({
+                frequency: this.conf.hpf_co,
+                type: "highpass",
+                rolloff: -12,
+                Q:1                
+            });
 
+            this.lpf = new Tone.Filter({
+                frequency: this.conf.lpf_co,
+                type: "lowpass",
+                rolloff: -12,
+                Q:1                                
+            });
 
             break;
         case "noise":
@@ -115,28 +126,27 @@ class WFXRSynth {
 //            this.osc.start();
             //            this.amp_env.toMaster();
             this.amp_env.connect(this.vibrato);
-            this.vibrato.toMaster();
-
+//            this.vibrato.toMaster();
+            this.vibrato.connect(this.hpf);
+            //            this.hpf.toMaster();
+            this.hpf.connect(this.lpf);
+            this.lpf.toMaster();
 
             this.osc.connect(this.amp_env).start();
             this.freqscale_env.triggerAttackRelease(this.conf.release_time);
             this.amp_env.triggerAttackRelease(this.conf.release_time);
 
-            var this_synth=this;
-            setTimeout(function() {
-                var mul = Math.pow( 2, this_synth.conf.change_amount );
-                this_synth.freqscale_env.baseFrequency *= mul;
-
-                console.log("mul:",mul, "rel:", this_synth.conf.release_time);
-                
-                this_synth.freqscale_env.triggerAttackRelease(this_synth.conf.release_time);
-//                this_synth.amp_env.triggerAttackRelease(this_synth.conf.release_time);
-                
-            },this_synth.conf.change_speed*1000);
-
-
-
-
+            if(this.conf.change_speed>0) {
+                console.log("CHANING*");
+                var this_synth=this;
+                setTimeout(function() {
+                    var mul = Math.pow( 2, this_synth.conf.change_amount );
+                    this_synth.freqscale_env.baseFrequency *= mul;
+                    this_synth.freqscale_env.triggerAttackRelease(this_synth.conf.release_time);
+                    //                this_synth.amp_env.triggerAttackRelease(this_synth.conf.release_time);
+                    
+                },this_synth.conf.change_speed*1000);
+            }
 
             
 //            this.amp_env.toMaster();            
@@ -155,6 +165,8 @@ var synth;
 
 function onPlayButton() {
     console.log("Play");
+    Tone.context.close();
+    Tone.context = new AudioContext();
     
     synth = new WFXRSynth(current_conf);
     synth.play();
@@ -191,7 +203,7 @@ minmax= {
     freq_decay_time: [0,5],
     freq_release_time: [0,5],
     freq_sustain_level: [0,1],
-    freq_octave: [-10,10],
+    freq_octave: [-15,15],
     delta_slide: [0,1],
     vib_depth: [0,5],
     vib_freq: [0,100],
@@ -202,10 +214,10 @@ minmax= {
     repeat_speed: [0,1],
     ph_ofs: [0,1],
     ph_sweep: [0,1],
-    lpf_co: [0,1],
+    lpf_co: [0,10000],
     lpf_co_sweep: [0,1],
     lpf_reso: [0,1],
-    hpf_co: [0,1],
+    hpf_co: [0,10000],
     hpf_co_sweep: [0,1],
     hpf_reso: [0,1],
     playback_vol: [0,1]        
@@ -254,9 +266,38 @@ function onTemplateButton(type) {
         setSlider("vib_depth", 0);
         setSlider("vib_freq", 0);
         setSlider("change_amount",range(520,600));
-        setSlider("change_speed",range(50,120));        
+        setSlider("change_speed",range(50,120));
+
+        setSlider("hpf_co",0);
+        setSlider("lpf_co",1000);
+
+        setSlider("freq_octave",500);
+        
         break;
     case 'shoot':
+        current_conf.osc_type=["sine","sawtooth","square"][Math.floor(range(0,3))];
+
+        setSlider("attack_time",0);
+        setSlider("decay_time",range(100,300));        
+        setSlider("sustain_time",0);
+        setSlider("sustain_level",range(1,20));
+        setSlider("release_time",range(1,100));
+        
+        setSlider("start_freq",range(50,700));
+        setSlider("vib_depth", 0);
+        setSlider("vib_freq", 0);
+
+        setSlider("freq_octave",range(50,200));
+        setSlider("freq_attack_time",range(5,100));
+        setSlider("freq_release_time",1000);
+
+        setSlider("hpf_co",0);
+        setSlider("lpf_co",1000);
+
+        setSlider("change_speed",0);
+        setSlider("change_amount",500);        
+        
+        break;
     case 'explosion':
     case 'powerup':
     case 'hurt':
