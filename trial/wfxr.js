@@ -254,6 +254,10 @@ function onVibButton(type) {
 }
 
 function onTemplateButton(type) {
+    for(var i in names) {
+        var elem=document.getElementById(names[i]);
+        elem.value=500;
+    }
     switch(type) {
     case 'pickup':
         current_conf.osc_type="square";
